@@ -30,11 +30,10 @@ These don't help because they don't show what "organized" or "appropriate" means
 
 ## Good: Concrete Patterns
 
-Show directory structures:
+Show directory structures, file paths, or exact code:
 
 ```markdown
-# Ruby example
-"Place model-specific concerns in `app/models/model_name/`."
+"Place model-specific concerns in `app/models/model_name/`, not `app/models/concerns/`."
 
 \`\`\`
 app/models/
@@ -45,20 +44,6 @@ app/models/
 └── concerns/            # Only shared concerns
     └── mentionable.rb
 \`\`\`
-
-# TypeScript example
-"Co-locate components with their tests and styles."
-
-\`\`\`
-app/components/
-├── Button/
-│   ├── Button.tsx
-│   ├── Button.test.tsx
-│   └── index.ts
-└── Card/
-    ├── Card.tsx
-    └── index.ts
-\`\`\`
 ```
 
 The reader knows exactly where to put files.
@@ -67,55 +52,21 @@ The reader knows exactly where to put files.
 
 When showing a pattern, include before and after:
 
-```markdown
-# Ruby example
-\`\`\`ruby
-# Bad: Custom controller action
-resources :cards do
-  post :close
-end
-
-# Good: Resource controller
-resources :cards do
-  resource :closure, only: [:create, :destroy]
-end
-\`\`\`
-
-# TypeScript example
-\`\`\`typescript
-// Bad: Inline conditional classes
+```typescript
+// Bad: Inline conditional classes, hard to read at a glance
 <button className={`btn ${isActive ? 'btn-active' : ''} ${isDisabled ? 'btn-disabled' : ''}`}>
 
-// Good: Using cn() utility
-<button className={cn("btn", { "btn-active": isActive, "btn-disabled": isDisabled })}>
-\`\`\`
+// Good: Utility function, intent is clear
+<button className={cn("btn", { "btn-active": isActive, "btn-disabled" isDisabled })}>
 ```
 
 The contrast makes the improvement obvious.
 
 ## Use Real Code
 
-Patterns from real codebases are more convincing:
+Patterns from real codebases are more convincing than invented snippets:
 
-```markdown
-# Ruby example from Fizzy:
-\`\`\`ruby
-module Card::Closeable
-  extend ActiveSupport::Concern
-
-  included do
-    has_one :closure, dependent: :destroy
-    scope :closed, -> { joins(:closure) }
-  end
-
-  def close
-    create_closure!(user: Current.user)
-  end
-end
-\`\`\`
-
-# TypeScript example from a React codebase:
-\`\`\`typescript
+```typescript
 function Button({ className, variant, children }: ButtonProps) {
   return (
     <button
@@ -132,7 +83,6 @@ function Button({ className, variant, children }: ButtonProps) {
     </button>
   );
 }
-\`\`\`
 ```
 
 Real code shows that the pattern actually works in production.
@@ -141,69 +91,28 @@ Real code shows that the pattern actually works in production.
 
 Simple rules get simple examples:
 
-```markdown
-# Ruby: Simple rule, simple example
-Use `_later` suffix for async methods.
-
-\`\`\`ruby
-def notify
-  # sync
-end
-
-def notify_later
-  NotifyJob.perform_later(self)
-end
-\`\`\`
-
-# TypeScript: Simple rule, simple example
-Use named exports, not default exports.
-
-\`\`\`typescript
+```typescript
+// Simple rule: use named exports
 // Bad
 export default function formatCurrency() {}
 
 // Good
 export function formatCurrency() {}
-\`\`\`
 ```
 
 Complex rules may need longer examples with comments:
 
-```markdown
-# Ruby: Complex rule, annotated example
-\`\`\`ruby
-module CurrentAttributesJobExtensions
-  def initialize(...)
-    super
-    @account = Current.account  # Capture at enqueue time
-  end
-
-  def serialize
-    super.merge("account" => @account&.to_gid)  # Store in job payload
-  end
-
-  def perform_now
-    Current.with_account(account) { super }  # Set before perform
-  end
-end
-\`\`\`
-
-# TypeScript: Complex rule, annotated example
-\`\`\`typescript
+```typescript
 function useDebounce<T>(value: T, delay: number): T {
   let [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
-    // Set up timer to update debounced value
     let timer = setTimeout(() => setDebouncedValue(value), delay);
-
-    // Clean up timer on value change or unmount
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timer); // Clean up on change or unmount
   }, [value, delay]);
 
   return debouncedValue;
 }
-\`\`\`
 ```
 
 ## Rules

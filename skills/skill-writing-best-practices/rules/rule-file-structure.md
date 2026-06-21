@@ -134,9 +134,7 @@ End with numbered takeaways:
 
 Keep to 3-6 rules. These should be scannable action items.
 
-## Complete Examples
-
-### Ruby Example
+## Complete Example
 
 ```markdown
 ---
@@ -147,13 +145,13 @@ tags: [jobs, architecture]
 
 # Keep Jobs Thin
 
-Jobs should be thin wrappers that call model methods. All business logic belongs in the model layer.
+Jobs should be thin wrappers that call model methods.
+All business logic belongs in the model layer.
 
 ## Why
 
 - **Testability**: Model methods can be unit tested without job infrastructure
 - **Reusability**: Same logic works sync or async
-- **Debuggability**: Logic isn't buried in job classes
 
 ## Pattern
 
@@ -178,65 +176,9 @@ end
 
 1. Jobs call one method on the received record
 2. All business logic lives in models
-3. Namespace jobs to mirror model structure
 ```
 
-### TypeScript Example
-
-```markdown
----
-title: Use Named Exports
-impact: MEDIUM
-tags: [modules, imports, typescript]
----
-
-# Use Named Exports
-
-Use named exports instead of default exports for better tooling support and explicit imports.
-
-## Why
-
-- **Refactoring**: Renaming is easier when the name is explicit at export
-- **Autocomplete**: IDEs can suggest imports automatically
-- **Tree-shaking**: Bundlers can eliminate unused named exports
-
-## Pattern
-
-\`\`\`typescript
-// Bad: Default export
-export default function formatCurrency(amount: number) {
-  return `$${amount.toFixed(2)}`;
-}
-
-// Importing - name can be anything, easy to mismatch
-import format from "./format";
-
-// Good: Named export
-export function formatCurrency(amount: number) {
-  return `$${amount.toFixed(2)}`;
-}
-
-// Importing - name must match, IDE autocompletes
-import { formatCurrency } from "./format";
-\`\`\`
-
-## Exception
-
-Remix route components use default exports by convention:
-
-\`\`\`typescript
-// app/routes/dashboard.tsx
-export default function Dashboard() {
-  return <div>...</div>;
-}
-\`\`\`
-
-## Rules
-
-1. Use named exports for utilities, hooks, and components
-2. Default exports only for framework conventions (routes)
-3. One export per file is fine, still use named
-```
+For more on writing effective examples, see @rules/concrete-examples.md.
 
 ## Rules
 

@@ -20,24 +20,14 @@ Don't just show what to do. Explain why it matters. Rules without reasoning feel
 ```markdown
 ## Pattern
 
-# Ruby example
 Use `after_create_commit` instead of `after_create` for jobs.
 
 \`\`\`ruby
 after_create_commit :notify_later
 \`\`\`
-
-# TypeScript example
-Use `useCallback` for event handlers passed to children.
-
-\`\`\`typescript
-const handleClick = useCallback(() => {
-  doSomething();
-}, []);
-\`\`\`
 ```
 
-These tell you what to do but not why. Someone might wonder: "What's wrong with `after_create`?" or "Why do I need `useCallback`?"
+This tells you what to do but not why. Someone might wonder: "What's wrong with `after_create`?"
 
 ## Good: Rules With Why
 
@@ -55,29 +45,6 @@ after_create :notify_later
 
 # Good: Job runs after transaction is committed
 after_create_commit :notify_later
-\`\`\`
-```
-
-```markdown
-## Why
-
-- **Referential stability**: Without `useCallback`, the function is recreated every render, causing child components to re-render unnecessarily.
-- **Dependency safety**: React hooks that depend on this function won't trigger infinite loops.
-
-## Pattern
-
-\`\`\`typescript
-// Bad: New function every render, children re-render
-function Parent() {
-  const handleClick = () => doSomething();
-  return <Child onClick={handleClick} />;
-}
-
-// Good: Stable reference, children don't re-render
-function Parent() {
-  const handleClick = useCallback(() => doSomething(), []);
-  return <Child onClick={handleClick} />;
-}
 \`\`\`
 ```
 

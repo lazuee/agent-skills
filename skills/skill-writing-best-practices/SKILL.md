@@ -5,11 +5,9 @@ description: Guidelines for creating AI agent skills. Use when writing new skill
 
 # Skill Writing Best Practices
 
-Patterns for creating effective AI agent skills that capture coding conventions and best practices. Contains 6 rules covering structure, content, and writing style.
+Patterns for creating effective AI agent skills. Contains 10 rules across structure, content, and style.
 
 ## When to Apply
-
-Reference these guidelines when:
 
 - Creating a new skill from scratch
 - Extracting patterns from an existing codebase
@@ -22,146 +20,58 @@ Reference these guidelines when:
 
 #### skill-directory-structure - @rules/skill-directory-structure.md
 
-Every skill has a SKILL.md and a rules/ directory.
-
-```
-skills/
-└── topic-best-practices/
-    ├── SKILL.md              # Main summary with all rules
-    └── rules/
-        ├── rule-name.md      # Detailed individual rules
-        └── another-rule.md
-```
+One skill = one directory: `SKILL.md` + `rules/` subdirectory. Directory names use `{topic}-best-practices`.
 
 #### skill-md-structure - @rules/skill-md-structure.md
 
-SKILL.md has frontmatter, overview, and condensed rule summaries.
-
-```markdown
----
-name: topic-best-practices
-description: When to use this skill.
----
-
-# Topic Best Practices
-
-Brief intro. Contains N rules across M categories.
-
-## When to Apply
-
-- Situation 1
-- Situation 2
-
-## Rules Summary
-
-### Category (IMPACT)
-
-#### rule-name - @rules/rule-name.md
-
-One sentence. Code example.
-```
+SKILL.md has four parts: frontmatter, overview with "When to Apply", grouped rule summaries with one-liner descriptions, and optional philosophy.
 
 #### rule-file-structure - @rules/rule-file-structure.md
 
-Each rule file has frontmatter, explanation, examples, and takeaways.
+Each rule file has frontmatter (title, impact, tags), a "Why" section, a "Pattern" section with bad/good code, and numbered takeaways.
 
-```markdown
----
-title: Rule Title
-impact: HIGH
-tags: [relevant, tags]
----
+#### skill-scope - @rules/skill-scope.md
 
-# Rule Title
-
-What to do and why.
-
-## Why
-
-- Benefit 1
-- Benefit 2
-
-## Pattern
-
-\`\`\`ruby
-# Bad
-bad_code
-
-# Good
-good_code
-\`\`\`
-
-## Rules
-
-1. Takeaway 1
-2. Takeaway 2
-```
+One skill = one coherent topic. If you need "and" to describe it, it's two skills. Aim for 3-8 rules per skill.
 
 ### Content (HIGH)
 
+#### ground-in-source-code - @rules/ground-in-source-code.md
+
+Find the code first, then write the rule. Copy patterns from real files. Never invent APIs or assume framework behavior from memory.
+
 #### concrete-examples - @rules/concrete-examples.md
 
-Every rule needs code examples. Abstract advice is hard to apply.
-
-```markdown
-# Bad: Too abstract
-"Keep your code organized."
-
-# Good: Concrete
-"Place concerns in `app/models/model_name/` not `app/models/concerns/`."
-
-\`\`\`ruby
-# Shows exactly what to do
-app/models/card/closeable.rb
-\`\`\`
-```
+Every rule needs code examples. Show before/after transformations, use real code, and match example complexity to rule complexity.
 
 #### explain-why - @rules/explain-why.md
 
-Don't just show what. Explain why it matters.
+Every non-trivial rule needs a "Why" section. Use bolded benefit names with concrete, specific explanations — not vague phrases like "more maintainable".
 
-```markdown
-## Why
+#### anti-patterns - @rules/anti-patterns.md
 
-- **Testability**: Sync method can be tested without job infrastructure
-- **Flexibility**: Callers choose sync or async based on context
-- **Clarity**: The `_later` suffix makes async behavior explicit
-```
+Know what to leave out: no tutorial content, no API docs, no duplicating external library docs, no rules without examples.
 
 ### Style (MEDIUM)
 
 #### writing-style - @rules/writing-style.md
 
-Write naturally. Avoid AI-isms and excessive formatting.
+Write for AI agents consuming context windows. Be direct, cut filler, keep SKILL.md summaries to one sentence per rule, and reserve formatting for emphasis.
 
-```markdown
-# Bad
----
-Here is an overview of the key points:
----
+### Quality (MEDIUM)
 
-# Good
-Group related rules by category. Each rule gets a one-sentence
-description and a short code example.
-```
+#### validate-before-publishing - @rules/validate-before-publishing.md
+
+Run a self-review checklist before publishing: every rule has an example, code compiles, no contradictions between rules, and SKILL.md references match rule files.
 
 ## Philosophy
 
-Good skills are:
-
-1. **Concrete** - Every rule has code examples
-2. **Reasoned** - Explains why, not just what
-3. **Scannable** - Easy to find relevant rules quickly
-4. **Honest** - Shows when NOT to use a pattern
-5. **Natural** - Written like documentation, not AI output
-
-## Content Quality Rules
-
-### Avoid Duplication
-
-Do not repeat information inside of a skill. Keep them concise.
-
-**Guidelines:**
-- One concept per section
-- Cross-reference instead of repeating
-- Check other skills before creating new content
+1. **Grounded** — Rules come from observed code, not assumed knowledge
+2. **Focused** — One skill, one topic, 3-8 rules
+3. **Concrete** — Every rule has code examples
+4. **Reasoned** — Explains why, not just what
+5. **Scannable** — One sentence per rule summary; details in rule files
+6. **Brevity** — SKILL.md is a summary; rule files hold the depth
+7. **Validated** — Tested against real scenarios before publishing
+8. **Honest** — Shows when NOT to use a pattern
+9. **Natural** — Written like documentation, not AI output

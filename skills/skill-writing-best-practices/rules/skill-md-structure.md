@@ -37,6 +37,22 @@ The description should help agents understand when to reference this skill. Incl
 | `disable-model-invocation` | `true` = only user can invoke (for deploy, commit, etc.)   |
 | `user-invocable`           | `false` = hide from `/` menu (background knowledge)        |
 
+### Writing Effective Descriptions
+
+The `description` is how agents decide whether to load your skill. Write it like a search snippet.
+
+```yaml
+# Bad: Too vague — agent can't determine relevance
+description: Best practices for coding.
+
+# Good: Specific triggers and scope
+description: Naming conventions for Prisma schemas that map to MySQL
+  tables. Use when defining models, reviewing schema changes, or
+  introspecting legacy databases.
+```
+
+Include: what the skill covers, when to trigger it, and specific keywords agents will match against.
+
 ## 2. Overview
 
 Title, intro, and application guidance:
@@ -62,7 +78,7 @@ Keep the intro to 1-2 sentences. The bullet list helps agents quickly assess rel
 Group rules by category with impact levels. Each rule gets:
 - Header linking to full file
 - One-sentence description
-- Short code example showing the core pattern
+- Optional: ultra-brief example (1-2 lines) if the pattern is hard to grasp from text alone
 
 ```markdown
 ## Rules Summary
@@ -74,14 +90,11 @@ Group rules by category with impact levels. Each rule gets:
 One sentence explaining what to do.
 
 \`\`\`ruby
-# Bad
-bad_example
-
-# Good
-good_example
+# Optional: only if a 1-2 line snippet clarifies the pattern
+after_create_commit :notify_later
 \`\`\`
 
-#### another-rule - @rules/another-rule.md
+#### another-rule - @rules/rule-name.md
 
 Another one-sentence explanation.
 ```
@@ -90,6 +103,8 @@ Impact levels:
 - **CRITICAL/HIGH** - Core patterns, always follow
 - **MEDIUM** - Important but flexible
 - **LOW** - Nice-to-haves
+
+**On inline examples in summaries**: Include a code snippet only when the pattern is hard to understand from the description alone. Keep it to 1-2 lines. If the description is clear, skip the example — the rule file has the full code. Don't duplicate multi-line examples from rule files.
 
 ## 4. Philosophy (Optional)
 
@@ -155,5 +170,5 @@ Use descriptive names.
 1. Frontmatter has `name` and `description`
 2. Overview includes "When to Apply" bullets
 3. Rules are grouped by category with impact levels
-4. Each rule gets one sentence + short code example
+4. Each rule gets one sentence + optional ultra-brief example
 5. Link to full rules with `@rules/rule-name.md`
